@@ -1,0 +1,1 @@
+openExample('shared_positioning/IMUandGPSFusionExample')
