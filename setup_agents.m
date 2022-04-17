@@ -106,7 +106,7 @@ imu_3.Magnetometer.NoiseDensity = 0.3/ sqrt(50);
 imu_3.RandomStream = 'mt19937ar with seed';
 imu_3.Seed = 3;
 
-%% GPS setup
+%% GPS setup for Agent 1
 
 fs_gps = 1; % Hz
 refloc = [42.2825 -72.3430 53.0352]; % Quabbin resevoir in MA
@@ -196,7 +196,7 @@ else % Stationary Traj
     trajAngVel_3 = trajAngVel_1;
 end
 
-%% Initialize the states of the insfilterMARG
+%% Initialize the states of the insfilterMARG for Agent 1
 initstate_1 = zeros(22,1);
 if moving_traj_flag == true
     initstate_1(1:4) = compact( meanrot(trajOrient(1:100)));
