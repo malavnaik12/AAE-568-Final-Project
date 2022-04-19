@@ -19,7 +19,7 @@
 % Credit to MATLAB Example: 
 % https://www.mathworks.com/help/fusion/ug/imu-and-gps-fusion-for-inertial-navigation.html
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
+clear,clc,clf,close;
 %% IMU_1 setup
 
 fs_imu = 200; % Hz
@@ -213,7 +213,3 @@ initstate_1(17:19) =  imu_1.MagneticField;
 initstate_1(20:22) = imu_1.Magnetometer.ConstantBias;
 
 ekf_1.State = initstate_1;
-
-
-
-

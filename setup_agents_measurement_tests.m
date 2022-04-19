@@ -14,12 +14,16 @@
 % with Agents 2/3 offset positionally 5 m North and East 
 % respectively. Stationary traj starts at the same initial 
 % position as Moving traj but has zero vel or orientation change
+%
+% Testing section is now created to test the noisy measurement 
+% generation capabilities of different custom functions. The 
+% testing section is at the very bottom of this script.
 % 
 % Author: Nathan Gurgens
 % Credit to MATLAB Example: 
 % https://www.mathworks.com/help/fusion/ug/imu-and-gps-fusion-for-inertial-navigation.html
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
+clear,clc,clf,close;
 %% IMU_1 setup
 
 fs_imu = 200; % Hz
@@ -106,7 +110,7 @@ imu_3.Magnetometer.NoiseDensity = 0.3/ sqrt(50);
 imu_3.RandomStream = 'mt19937ar with seed';
 imu_3.Seed = 3;
 
-%% GPS setup
+%% GPS setup for Agent 1
 
 fs_gps = 1; % Hz
 refloc = [42.2825 -72.3430 53.0352]; % Quabbin resevoir in MA
@@ -146,7 +150,7 @@ moving_traj_flag = false; % set true for LoggedQuadcopter data
 
 %% Trajectory setup
 
-if moving_traj_flag == true
+if moving_traj_flag == true % Moving Traj
     % Load the "ground truth" UAV trajectory.
     load LoggedQuadcopter.mat trajData;
 
@@ -171,7 +175,7 @@ if moving_traj_flag == true
     trajAcc_3 = trajData.Acceleration;
     trajAngVel_3 = trajData.AngularVelocity;
 
-else 
+else % Stationary Traj
     num_data = 20000;
 
     % Agent 1
@@ -196,24 +200,29 @@ else
     trajAngVel_3 = trajAngVel_1;
 end
 
-%% Initialize the states of the insfilterMARG
-initstate = zeros(22,1);
+%% Initialize the states of the insfilterMARG for Agent 1
+initstate_1 = zeros(22,1);
 if moving_traj_flag == true
-    initstate(1:4) = compact( meanrot(trajOrient(1:100)));
-    initstate(5:7) = mean( trajPos(1:100,:), 1);
-    initstate(8:10) = mean( trajVel(1:100,:), 1);
+    initstate_1(1:4) = compact( meanrot(trajOrient(1:100)));
+    initstate_1(5:7) = mean( trajPos(1:100,:), 1);
+    initstate_1(8:10) = mean( trajVel(1:100,:), 1);
 else
-    initstate(1:4) = compact(trajOrient_1(1));
-    initstate(5:7) = trajPos_1(1,:);
-    initstate(8:10) = trajVel_1(1,:);
+    initstate_1(1:4) = compact(trajOrient_1(1));
+    initstate_1(5:7) = trajPos_1(1,:);
+    initstate_1(8:10) = trajVel_1(1,:);
 end
-initstate(11:13) =  imu_1.Gyroscope.ConstantBias./fs_imu;
-initstate(14:16) =  imu_1.Accelerometer.ConstantBias./fs_imu;
-initstate(17:19) =  imu_1.MagneticField;
-initstate(20:22) = imu_1.Magnetometer.ConstantBias;
+initstate_1(11:13) =  imu_1.Gyroscope.ConstantBias./fs_imu;
+initstate_1(14:16) =  imu_1.Accelerometer.ConstantBias./fs_imu;
+initstate_1(17:19) =  imu_1.MagneticField;
+initstate_1(20:22) = imu_1.Magnetometer.ConstantBias;
 
-ekf_1.State = initstate;
+ekf_1.State = initstate_1;
 
-
-
-
+%% TESTING: Generating Noisy Measurements
+noisyAgent3 = rangeMeasurementAddedNoise(trajPos_3(1:1000,:));
+plotSteps = 1:1:numel(noisyAgent3(:,1));
+figure(1)
+hold on
+plot(plotSteps,trajPos_3(1:1000,:),'k-')
+plot(plotSteps,noisyAgent3,'r-')
+cov = noisyAgent3(:,1)*noisyAgent3(:,1)';
