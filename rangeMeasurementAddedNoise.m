@@ -8,3 +8,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [measurements] = rangeMeasurementAddedNoise(refTraj)
+
+measurements = awgn(refTraj,10,'measured');

@@ -14,6 +14,10 @@
 % with Agents 2/3 offset positionally 5 m North and East 
 % respectively. Stationary traj starts at the same initial 
 % position as Moving traj but has zero vel or orientation change
+%
+% Testing section is now created to test the noisy measurement 
+% generation capabilities of different custom functions. The 
+% testing section is at the very bottom of this script.
 % 
 % Author: Nathan Gurgens
 % Credit to MATLAB Example: 
@@ -22,7 +26,7 @@
 clear,clc,clf,close;
 %% IMU_1 setup
 
-fs_imu = 160; % Hz
+fs_imu = 200; % Hz
 
 imu_1 = imuSensor('accel-gyro-mag', 'SampleRate', fs_imu);
 imu_1.MagneticField = [19.5281 -5.0741 48.0067];
@@ -118,17 +122,16 @@ gps.HorizontalPositionAccuracy = 1.6;
 gps.VerticalPositionAccuracy = 1.6;
 gps.VelocityAccuracy = 0.1;
 
-%% Measurement Noises
-
-Rmag = 0.09; % Magnetometer measurement noise
-Rvel = 0.01; % GPS Velocity measurement noise
-Rpos = 2.56; % GPS Position measurement noise
-
 %% EKF setup for Agent 1
 
 ekf_1 = insfilterMARG;
 ekf_1.IMUSampleRate = fs_imu;
 ekf_1.ReferenceLocation = refloc;
+
+% Measurement noises
+Rmag = 0.09; % Magnetometer measurement noise
+Rvel = 0.01; % GPS Velocity measurement noise
+Rpos = 2.56; % GPS Position measurement noise
 
 % Process noises
 ekf_1.AccelerometerBiasNoise =  2e-4;
@@ -141,43 +144,9 @@ ekf_1.GeomagneticVectorNoise = 1e-12;
 % Initial error covariance
 ekf_1.StateCovariance = 1e-9*ones(22);
 
-%% EKF setup for Agent 2
-
-ekf_2 = insfilterMARG;
-ekf_2.IMUSampleRate = fs_imu;
-ekf_2.ReferenceLocation = refloc;
-
-% Process noises
-ekf_2.AccelerometerBiasNoise =  2e-4;
-ekf_2.AccelerometerNoise = 2; 
-ekf_2.GyroscopeBiasNoise = 1e-16;
-ekf_2.GyroscopeNoise =  1e-5;
-ekf_2.MagnetometerBiasNoise = 1e-10;
-ekf_2.GeomagneticVectorNoise = 1e-12;
-
-% Initial error covariance
-ekf_2.StateCovariance = 1e-9*ones(22);
-
-%% EKF setup for Agent 3
-
-ekf_3 = insfilterMARG;
-ekf_3.IMUSampleRate = fs_imu;
-ekf_3.ReferenceLocation = refloc;
-
-% Process noises
-ekf_3.AccelerometerBiasNoise =  2e-4;
-ekf_3.AccelerometerNoise = 2; 
-ekf_3.GyroscopeBiasNoise = 1e-16;
-ekf_3.GyroscopeNoise =  1e-5;
-ekf_3.MagnetometerBiasNoise = 1e-10;
-ekf_3.GeomagneticVectorNoise = 1e-12;
-
-% Initial error covariance
-ekf_3.StateCovariance = 1e-9*ones(22);
-
 %% Trajectory Flags
 
-moving_traj_flag = true; % set true for LoggedQuadcopter data
+moving_traj_flag = false; % set true for LoggedQuadcopter data
 
 %% Trajectory setup
 
@@ -234,9 +203,9 @@ end
 %% Initialize the states of the insfilterMARG for Agent 1
 initstate_1 = zeros(22,1);
 if moving_traj_flag == true
-    initstate_1(1:4) = compact(meanrot(trajOrient_1(1:100)));
-    initstate_1(5:7) = mean(trajPos_1(1:100,:), 1);
-    initstate_1(8:10) = mean(trajVel_1(1:100,:), 1);
+    initstate_1(1:4) = compact( meanrot(trajOrient(1:100)));
+    initstate_1(5:7) = mean( trajPos(1:100,:), 1);
+    initstate_1(8:10) = mean( trajVel(1:100,:), 1);
 else
     initstate_1(1:4) = compact(trajOrient_1(1));
     initstate_1(5:7) = trajPos_1(1,:);
@@ -248,3 +217,12 @@ initstate_1(17:19) =  imu_1.MagneticField;
 initstate_1(20:22) = imu_1.Magnetometer.ConstantBias;
 
 ekf_1.State = initstate_1;
+
+%% TESTING: Generating Noisy Measurements
+noisyAgent3 = rangeMeasurementAddedNoise(trajPos_3(1:1000,:));
+plotSteps = 1:1:numel(noisyAgent3(:,1));
+figure(1)
+hold on
+plot(plotSteps,trajPos_3(1:1000,:),'k-')
+plot(plotSteps,noisyAgent3,'r-')
+cov = noisyAgent3(:,1)*noisyAgent3(:,1)';
