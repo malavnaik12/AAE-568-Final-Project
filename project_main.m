@@ -26,8 +26,11 @@ pqpos_3 = zeros(loopBound,3);
 fcnt = 1;
 
 while(fcnt <=loopBound)
-    % |predict| loop at IMU update frequency.
     for ff=1:fs_imu
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % |predict| loop at IMU update frequency.
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
         % Simulate the IMU data from the current pose.
         [accel_1, gyro_1, mag_1] = imu_1(trajAcc_1(fcnt,:), trajAngVel_1(fcnt, :),trajOrient_1(fcnt));
         [accel_2, gyro_2, mag_2] = imu_2(trajAcc_2(fcnt,:), trajAngVel_2(fcnt, :),trajOrient_2(fcnt));
@@ -54,15 +57,25 @@ while(fcnt <=loopBound)
         
         fcnt = fcnt + 1;
     end
-    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % This next step happens at the GPS sample rate.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     % Simulate the GPS output based on the current pose.
     [lla_1, gpsvel_1] = gps(trajPos_1(fcnt,:), trajVel_1(fcnt,:) );
     
-    % Correct the filter states based on the GPS data and magnetic
-    % field measurements.
+    % @MALAV Simulate the radar measurements based on the current pose
+    % [relative_pos_NED_coords_1_to_2, rel_Cov_2] = radar(trajPos_1(fcnt,:), trajPos_2(fcnt,:))
+    % [relative_pos_NED_coords_1_to_3, rel_Cov_3] = radar(trajPos_1(fcnt,:), trajPos_3(fcnt,:))
+    
+    % Correct the filter states based on the GPS measurement.
     fusegps(ekf_1, lla_1, Rpos, gpsvel_1, Rvel);
     
+    % Correct the filter states based on the relative position measurement.
+    % fuserange(ekf_1, ekf_2);
+    % fuserange(ekf_1, ekf_3);
+    
+    % Correct the filter states based on the magnetic field measurement.
     fusemag(ekf_1, mag_1, Rmag);
     fusemag(ekf_2, mag_2, Rmag);
     fusemag(ekf_3, mag_3, Rmag);
