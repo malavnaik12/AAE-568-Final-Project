@@ -7,6 +7,14 @@
 % Author: Malav Naik
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [measurements] = rangeMeasurementAddedNoise(refTraj)
+function [measurements,covariance] = rangeMeasurementAddedNoise(refTraj, mean, variance)
 
-measurements = awgn(refTraj,10,'measured');
+% measurements = awgn(refTraj,10,'measured');
+rng(1);
+for ii = 1:numel(refTraj(1,:))
+    noise(:,ii) = mean + sqrt(variance)*randn(size(refTraj(:,ii)));
+    measurements(:,ii) = refTraj(:,ii) + randn(size(refTraj(:,ii)));
+    
+    % Covariance model is missing
+    covariance = 0; % Placeholder variable
+end

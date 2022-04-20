@@ -218,8 +218,11 @@ initstate_1(20:22) = imu_1.Magnetometer.ConstantBias;
 
 ekf_1.State = initstate_1;
 
-%% TESTING: Generating Noisy Measurements
-noisyAgent3 = rangeMeasurementAddedNoise(trajPos_3(1:1000,:));
+%% TESTING: Generating Noisy Measurementsn
+noiseMean = 0;
+noiseVar = 1;
+[noisyAgent3, noiseProfile] = rangeMeasurementAddedNoise(trajPos_3(1:1000,:), noiseMean, noiseVar);
+noiseProfile(1,:)'*noiseProfile(1,:)
 plotSteps = 1:1:numel(noisyAgent3(:,1));
 figure(1)
 hold on
