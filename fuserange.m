@@ -13,7 +13,7 @@ function fuserange(ekf_1, ekf_n, rel_vec, rel_Cov)
 % Compute the position of Agent n given the relative position measurement
 % between Agent 1 and Agent n and the estimated position of Agent 1
 
-% @MALAV [pos_meas_n, meas_Cov_n] = compute_pos_n(ekf_1, rel_vec, rel_Cov)
+[pos_meas_n, meas_Cov_n] = compute_pos_n(ekf_1, rel_vec, rel_Cov);
 
 range_correction(ekf_n, pos_meas_n, @rangeMeasFcn, meas_Cov_n, @rangeMeasJacobianFcn)
 

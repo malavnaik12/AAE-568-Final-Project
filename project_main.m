@@ -67,13 +67,15 @@ while(fcnt <=loopBound)
     % @MALAV Simulate the radar measurements based on the current pose
     % [relative_pos_NED_coords_1_to_2, rel_Cov_2] = radar(trajPos_1(fcnt,:), trajPos_2(fcnt,:))
     % [relative_pos_NED_coords_1_to_3, rel_Cov_3] = radar(trajPos_1(fcnt,:), trajPos_3(fcnt,:))
-    
+    [relative_pos_NED_coords_1_to_2, rel_Cov_2] = rangeMeasAddedNoise(trajPos_1(fcnt,:), trajPos_2(fcnt,:), noiseMean, noiseVar, 2);
+    [relative_pos_NED_coords_1_to_3, rel_Cov_3] = rangeMeasAddedNoise(trajPos_1(fcnt,:), trajPos_3(fcnt,:), noiseMean, noiseVar, 3);
+
     % Correct the filter states based on the GPS measurement.
     fusegps(ekf_1, lla_1, Rpos, gpsvel_1, Rvel);
     
     % Correct the filter states based on the relative position measurement.
-    % fuserange(ekf_1, ekf_2);
-    % fuserange(ekf_1, ekf_3);
+    % fuserange(ekf_1, ekf_2, relative_pos_NED_coords_1_to_2, rel_Cov_2)
+    % fuserange(ekf_1, ekf_3, relative_pos_NED_coords_1_to_3, rel_Cov_3);
     
     % Correct the filter states based on the magnetic field measurement.
     fusemag(ekf_1, mag_1, Rmag);

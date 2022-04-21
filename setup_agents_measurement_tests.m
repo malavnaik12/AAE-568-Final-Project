@@ -221,11 +221,4 @@ ekf_1.State = initstate_1;
 %% TESTING: Generating Noisy Measurementsn
 noiseMean = 0;
 noiseVar = 1;
-[noisyAgent3, noiseProfile] = rangeMeasurementAddedNoise(trajPos_3(1:1000,:), noiseMean, noiseVar);
-noiseProfile(1,:)'*noiseProfile(1,:)
-plotSteps = 1:1:numel(noisyAgent3(:,1));
-figure(1)
-hold on
-plot(plotSteps,trajPos_3(1:1000,:),'k-')
-plot(plotSteps,noisyAgent3,'r-')
-cov = noisyAgent3(:,1)*noisyAgent3(:,1)';
+[rangeMeas, rangeCov] = rangeMeasAddedNoise(trajPos_1(1000,:),trajPos_3(1000,:), noiseMean, noiseVar);
