@@ -31,7 +31,7 @@ K = P_est*H.'/(H*P_est*(H.') + measCov);
 x_est = x_est + K*(z - h);
 P_est = P_est - K*H*P_est;
 
-x_est = repairQuaternion(ekf,x_est); % might cause syntax problems?
+x_est = repairQuaternion(ekf,x_est); 
 
 ekf.State = x_est;
 ekf.StateCovariance = P_est;

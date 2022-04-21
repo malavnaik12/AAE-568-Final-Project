@@ -233,18 +233,52 @@ end
 
 %% Initialize the states of the insfilterMARG for Agent 1
 initstate_1 = zeros(22,1);
+initstate_2 = zeros(22,1);
+initstate_3 = zeros(22,1);
 if moving_traj_flag == true
     initstate_1(1:4) = compact(meanrot(trajOrient_1(1:100)));
     initstate_1(5:7) = mean(trajPos_1(1:100,:), 1);
     initstate_1(8:10) = mean(trajVel_1(1:100,:), 1);
+    
+    initstate_2(1:4) = compact(meanrot(trajOrient_2(1:100)));
+    initstate_2(5:7) = mean(trajPos_2(1:100,:), 1);
+    initstate_2(8:10) = mean(trajVel_2(1:100,:), 1);
+    
+    initstate_3(1:4) = compact(meanrot(trajOrient_3(1:100)));
+    initstate_3(5:7) = mean(trajPos_3(1:100,:), 1);
+    initstate_3(8:10) = mean(trajVel_3(1:100,:), 1);
 else
     initstate_1(1:4) = compact(trajOrient_1(1));
     initstate_1(5:7) = trajPos_1(1,:);
     initstate_1(8:10) = trajVel_1(1,:);
+    
+    initstate_2(1:4) = compact(trajOrient_2(1));
+    initstate_2(5:7) = trajPos_2(1,:);
+    initstate_2(8:10) = trajVel_2(1,:);
+    
+    initstate_3(1:4) = compact(trajOrient_3(1));
+    initstate_3(5:7) = trajPos_3(1,:);
+    initstate_3(8:10) = trajVel_3(1,:);
 end
 initstate_1(11:13) =  imu_1.Gyroscope.ConstantBias./fs_imu;
 initstate_1(14:16) =  imu_1.Accelerometer.ConstantBias./fs_imu;
 initstate_1(17:19) =  imu_1.MagneticField;
-initstate_1(20:22) = imu_1.Magnetometer.ConstantBias;
+initstate_1(20:22) =  imu_1.Magnetometer.ConstantBias;
+
+initstate_2(11:13) =  imu_2.Gyroscope.ConstantBias./fs_imu;
+initstate_2(14:16) =  imu_2.Accelerometer.ConstantBias./fs_imu;
+initstate_2(17:19) =  imu_2.MagneticField;
+initstate_2(20:22) =  imu_2.Magnetometer.ConstantBias;
+
+initstate_3(11:13) =  imu_3.Gyroscope.ConstantBias./fs_imu;
+initstate_3(14:16) =  imu_3.Accelerometer.ConstantBias./fs_imu;
+initstate_3(17:19) =  imu_3.MagneticField;
+initstate_3(20:22) =  imu_3.Magnetometer.ConstantBias;
 
 ekf_1.State = initstate_1;
+ekf_2.State = initstate_2;
+ekf_3.State = initstate_3;
+
+
+
+
