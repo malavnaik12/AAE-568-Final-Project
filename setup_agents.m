@@ -118,6 +118,9 @@ gps.HorizontalPositionAccuracy = 1.6;
 gps.VerticalPositionAccuracy = 1.6;
 gps.VelocityAccuracy = 0.1;
 
+gps.RandomStream = 'mt19937ar with seed';
+gps.Seed = 365;
+
 %% Measurement Noises
 
 Rmag = 0.09; % Magnetometer measurement noise

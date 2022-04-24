@@ -7,14 +7,25 @@
 % Author: Malav Naik
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [pos_meas_n, meas_Cov_n] = compute_pos(ekf, rel_vec, rel_Cov)
+function [pos_meas_n, meas_Cov_n] = compute_pos(ekf, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num)
 
 % Zhiyao's function: stateComputeAgent1()
-agent1State_est_est = stateComputeAgent1(ekf,prev_pos_1, prev_vel_1, dt, curr_pos_1, drop_percent, est_est_flag);
+curr_pos_1 = ekf.State(5:7);
+prev_pos_1 = prev_state_1(5:7);
+prev_vel_1 = prev_state_1(8:10);
+agent1State_est_est = stateComputeAgent1(prev_pos_1, prev_vel_1, dt, curr_pos_1, drop_percent, est_est_flag, rand_num);
 
-agent1Pos_est_est = agent1State_est_est(1:3,1);
+if ~isnan(agent1State_est_est)
+    agent1Pos_est_est = agent1State_est_est(1:3,1);
 
-pos_meas_n = agent1Pos_est_est + rel_vec;
+    pos_meas_n = agent1Pos_est_est + rel_vec;
 
-agent1Pos_est_est_Cov = ekf.StateCovariance;
-meas_Cov_n = rel_Cov + agent1Pos_est_est_Cov; 
+    agent1Pos_est_est_Cov = ekf.StateCovariance;
+    meas_Cov_n = rel_Cov + agent1Pos_est_est_Cov(5:7,5:7); 
+else
+    pos_meas_n = NaN;
+    meas_Cov_n = NaN;
+end
+
+
+

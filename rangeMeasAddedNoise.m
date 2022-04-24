@@ -8,13 +8,16 @@
 % Author: Malav Naik
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [rangeMeas,covariance_n] = rangeMeasAddedNoise(trajPos_1, trajPos_n, mean, variance, agentID)
+function [rangeMeas,covariance_n] = rangeMeasAddedNoise(ekf, trajPos_n, mean, variance, agentID)
 % rng(agentID);
-for ii = 1:numel(trajPos_1(1,:))
-    rng(ii);
-    noise_1(ii,1) = mean + sqrt(2.56)*randn(size(trajPos_1(ii))); % Variance here needs to be GPS variance
-    trajPos1_meas(ii,1) = trajPos_1(ii) + noise_1(ii);
-end
+% for ii = 1:numel(trajPos_1(1,:))
+%     rng(ii);
+%     noise_1(ii,1) = mean + sqrt(gps_variance)*randn(size(trajPos_1(ii))); % Variance here needs to be GPS variance
+%     trajPos1_meas(ii,1) = trajPos_1(ii) + noise_1(ii);
+% end
+
+trajPos1_meas = pose(ekf).';
+
 % trajPos1_meas
 % covariance_1 = variance*eye(numel(trajPos_1(1,:)));
 % rng(agentID+5);

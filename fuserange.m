@@ -8,14 +8,16 @@
 % Author: Nathan Gurgens
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function fuserange(ekf_1, ekf_n, rel_vec, rel_Cov)
+function fuserange(ekf_1, ekf_n, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num)
 
 % Compute the position of Agent n given the relative position measurement
 % between Agent 1 and Agent n and the estimated position of Agent 1
 
-[pos_meas_n, meas_Cov_n] = compute_pos_n(ekf_1, rel_vec, rel_Cov);
+[pos_meas_n, meas_Cov_n] = compute_pos(ekf_1, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num);
 
-range_correction(ekf_n, pos_meas_n, @rangeMeasFcn, meas_Cov_n, @rangeMeasJacobianFcn)
+if ~isnan(pos_meas_n)
+    range_correction(ekf_n, pos_meas_n, @rangeMeasFcn, meas_Cov_n, @rangeMeasJacobianFcn)
+end
 
 end
 
@@ -23,15 +25,15 @@ end
 function range_correction(ekf, z, measFcn, measCov, measJacobianFcn)
 
 x_est = ekf.State;
+P_est = ekf.StateCovariance;
 h = measFcn(x_est);
 H = measJacobianFcn();
-P_est = ekf.StateCovariance;
 
-K = P_est*H.'/(H*P_est*(H.') + measCov);
+K = P_est*H.'*inv(H*P_est*(H.') + measCov);
 x_est = x_est + K*(z - h);
 P_est = P_est - K*H*P_est;
 
-x_est = repairQuaternion(ekf,x_est); 
+% x_est = repairQuaternion(ekf,x_est); 
 
 ekf.State = x_est;
 ekf.StateCovariance = P_est;
