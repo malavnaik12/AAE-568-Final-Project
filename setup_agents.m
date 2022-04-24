@@ -279,6 +279,6 @@ ekf_1.State = initstate_1;
 ekf_2.State = initstate_2;
 ekf_3.State = initstate_3;
 
-
-
-
+%% Initialization of the Noise Characteristics
+noiseMean = 0;
+gps_variance = Rpos;
