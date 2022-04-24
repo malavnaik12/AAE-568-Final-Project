@@ -42,7 +42,7 @@ for est_est_flag = 1
                 [accel_1, gyro_1, mag_1] = imu_1(trajAcc_1(fcnt,:), trajAngVel_1(fcnt, :),trajOrient_1(fcnt));
                 [accel_2, gyro_2, mag_2] = imu_2(trajAcc_2(fcnt,:), trajAngVel_2(fcnt, :),trajOrient_2(fcnt));
                 [accel_3, gyro_3, mag_3] = imu_3(trajAcc_3(fcnt,:), trajAngVel_3(fcnt, :),trajOrient_3(fcnt));
-
+                
                 % Use the |predict| method to estimate the filter state based
                 % on the simulated accelerometer and gyroscope signals.
                 predict(ekf_1, accel_1, gyro_1);

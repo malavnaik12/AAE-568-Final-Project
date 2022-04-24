@@ -2,7 +2,7 @@ function [pos_est_est] = trees_analysis(prev_pos_1,prev_vel_1,dt,curr_pos_1,drop
 
 rng(55);
 d_signal = rand(1,num_sec_trees); %disturbing signal simulates signal passing through obstabcles 
-s_signal = ones(1,num_sec_clear); %stable signal simulates signal perfectly transimitted
+s_signal = zeros(1,num_sec_clear); %stable signal simulates signal perfectly transimitted
 signal = [d_signal s_signal];
 
 if any(signal < drop_percent) 

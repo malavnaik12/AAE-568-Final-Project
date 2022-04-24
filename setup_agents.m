@@ -56,23 +56,23 @@ imu_2 = imuSensor('accel-gyro-mag', 'SampleRate', fs_imu);
 imu_2.MagneticField = [19.5281 -5.0741 48.0067];
 
 % Accelerometer
-imu_2.Accelerometer.MeasurementRange =  19.6133;
-imu_2.Accelerometer.Resolution = 0.0023928;
-imu_2.Accelerometer.ConstantBias = 0.19;
-imu_2.Accelerometer.NoiseDensity = 0.0012356;
+imu_2.Accelerometer.MeasurementRange =  0.99*19.6133;
+imu_2.Accelerometer.Resolution = 0.99*0.0023928;
+imu_2.Accelerometer.ConstantBias = 0.99*0.19;
+imu_2.Accelerometer.NoiseDensity = 0.99*0.0012356;
 
 % Gyroscope
-imu_2.Gyroscope.MeasurementRange = deg2rad(250);
-imu_2.Gyroscope.Resolution = deg2rad(0.0625);
-imu_2.Gyroscope.ConstantBias = deg2rad(3.125);
-imu_2.Gyroscope.AxesMisalignment = 1.5;
-imu_2.Gyroscope.NoiseDensity = deg2rad(0.025);
+imu_2.Gyroscope.MeasurementRange = 0.99*deg2rad(250);
+imu_2.Gyroscope.Resolution = 0.99*deg2rad(0.0625);
+imu_2.Gyroscope.ConstantBias = 0.99*deg2rad(3.125);
+imu_2.Gyroscope.AxesMisalignment = 0.99*1.5;
+imu_2.Gyroscope.NoiseDensity = 0.99*deg2rad(0.025);
 
 % Magnetometer
-imu_2.Magnetometer.MeasurementRange = 1000;
-imu_2.Magnetometer.Resolution = 0.1;
-imu_2.Magnetometer.ConstantBias = 100;
-imu_2.Magnetometer.NoiseDensity = 0.3/ sqrt(50);
+imu_2.Magnetometer.MeasurementRange = 0.99*1000;
+imu_2.Magnetometer.Resolution = 0.99*0.1;
+imu_2.Magnetometer.ConstantBias = 0.99*100;
+imu_2.Magnetometer.NoiseDensity = 0.99*0.3/ sqrt(50);
 
 % Random Number Generator
 imu_2.RandomStream = 'mt19937ar with seed';
@@ -84,23 +84,23 @@ imu_3 = imuSensor('accel-gyro-mag', 'SampleRate', fs_imu);
 imu_3.MagneticField = [19.5281 -5.0741 48.0067];
 
 % Accelerometer
-imu_3.Accelerometer.MeasurementRange =  19.6133;
-imu_3.Accelerometer.Resolution = 0.0023928;
-imu_3.Accelerometer.ConstantBias = 0.19;
-imu_3.Accelerometer.NoiseDensity = 0.0012356;
+imu_3.Accelerometer.MeasurementRange =  1.01*19.6133;
+imu_3.Accelerometer.Resolution = 1.01*0.0023928;
+imu_3.Accelerometer.ConstantBias = 1.01*0.19;
+imu_3.Accelerometer.NoiseDensity = 1.01*0.0012356;
 
 % Gyroscope
-imu_3.Gyroscope.MeasurementRange = deg2rad(250);
-imu_3.Gyroscope.Resolution = deg2rad(0.0625);
-imu_3.Gyroscope.ConstantBias = deg2rad(3.125);
-imu_3.Gyroscope.AxesMisalignment = 1.5;
-imu_3.Gyroscope.NoiseDensity = deg2rad(0.025);
+imu_3.Gyroscope.MeasurementRange = 1.01*deg2rad(250);
+imu_3.Gyroscope.Resolution = 1.01*deg2rad(0.0625);
+imu_3.Gyroscope.ConstantBias = 1.01*deg2rad(3.125);
+imu_3.Gyroscope.AxesMisalignment = 1.01*1.5;
+imu_3.Gyroscope.NoiseDensity = 1.01*deg2rad(0.025);
 
 % Magnetometer
-imu_3.Magnetometer.MeasurementRange = 1000;
-imu_3.Magnetometer.Resolution = 0.1;
-imu_3.Magnetometer.ConstantBias = 100;
-imu_3.Magnetometer.NoiseDensity = 0.3/ sqrt(50);
+imu_3.Magnetometer.MeasurementRange = 1.01*1000;
+imu_3.Magnetometer.Resolution = 1.01*0.1;
+imu_3.Magnetometer.ConstantBias = 1.01*100;
+imu_3.Magnetometer.NoiseDensity = 1.01*0.3/ sqrt(50);
 
 % Random Number Generator
 imu_3.RandomStream = 'mt19937ar with seed';
