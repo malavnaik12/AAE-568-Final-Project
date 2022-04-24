@@ -73,7 +73,7 @@ for est_est_flag = 1
 
             % Simulate the radar measurements based on the current pose
             [rel_pos_NED_1_to_2, rel_Cov_2] = rangeMeasAddedNoise(ekf_1, trajPos_2(fcnt,:), noiseMean, noiseVar, 2);
-            [rel_pos_NED_1_to_3, rel_Cov_3] = rangeMeasAddedNoise(ekf_1, trajPos_3(fcnt,:), noiseMean, noiseVar, 3);
+            [rel_pos_NED_1_to_3, rel_Cov_3] = rangeMeasAddedNoise(ekf_1, trajPos_3(fcnt,:), noiseMean, noiseVar, 1000);
 
             % Correct the filter states based on the GPS measurement.
             fusegps(ekf_1, lla_1, Rpos, gpsvel_1, Rvel);

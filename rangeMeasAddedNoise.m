@@ -8,7 +8,7 @@
 % Author: Malav Naik
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [rangeMeas,covariance_n] = rangeMeasAddedNoise(ekf, trajPos_n, mean, variance, agentID)
+function [rangeMeas,covariance_n] = rangeMeasAddedNoise(ekf, trajPos_n, mean, variance, seedInitializer)
 % rng(agentID);
 % for ii = 1:numel(trajPos_1(1,:))
 %     rng(ii);
@@ -22,7 +22,7 @@ trajPos1_meas = pose(ekf).';
 % covariance_1 = variance*eye(numel(trajPos_1(1,:)));
 % rng(agentID+5);
 for jj = 1:numel(trajPos_n(1,:))
-    rng(jj+agentID);
+    rng(jj+seedInitializer);
     noise_n(jj,1) = mean + sqrt(variance(jj))*randn(size(trajPos_n(jj)));
     trajPos_n_meas(jj,1) = trajPos_n(jj) + noise_n(jj);
 end
