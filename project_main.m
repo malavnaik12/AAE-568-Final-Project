@@ -14,7 +14,14 @@ rand_vec = rand(secondsToSimulate*2,1);
 loopBound = floor(numsamples);
 loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
-drop_range = (0:30:100)/100;
+drop_range = (100:30:100)/100;
+
+tree_flag = 1;
+num_sec_trees = 0.8*secondsToSimulate;
+num_sec_clear = 0.2*secondsToSimulate;
+d_signal = rand(1,num_sec_trees*2); %disturbing signal simulates signal passing through obstabcles 
+s_signal = ones(1,num_sec_clear*2); %stable signal simulates signal perfectly transimitted
+signal = [d_signal s_signal];
 
 % Log data for final metric computation.
 pqorient_1 = quaternion.zeros(loopBound,1,length(drop_range));
@@ -24,14 +31,14 @@ pqpos_2 = zeros(loopBound,3,length(drop_range));
 pqorient_3 = quaternion.zeros(loopBound,1,length(drop_range));
 pqpos_3 = zeros(loopBound,3,length(drop_range));
 
-fcnt = 1;
-
 prev_state_1 = ekf_1.State;
-sec_count = 1;
 
 for est_est_flag = 1
     drop_count = 1;
     for drop_percent = drop_range%(0:100)/100
+        drop_percent
+        fcnt = 1;
+        sec_count = 1;
         while(fcnt <=loopBound)
             for ff=1:fs_imu
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,8 +86,10 @@ for est_est_flag = 1
             fusegps(ekf_1, lla_1, Rpos, gpsvel_1, Rvel);
             
             % Correct the filter states based on the relative position measurement.
-            fuserange(ekf_1, ekf_2, rel_pos_NED_1_to_2, rel_Cov_2, prev_state_1, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count))
-            fuserange(ekf_1, ekf_3, rel_pos_NED_1_to_3, rel_Cov_3, prev_state_1, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count+1));
+%             signal(sec_count)
+%             signal(sec_count+1)
+            fuserange(ekf_1, ekf_2, rel_pos_NED_1_to_2, rel_Cov_2, prev_state_1, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count), tree_flag, signal(sec_count))
+            fuserange(ekf_1, ekf_3, rel_pos_NED_1_to_3, rel_Cov_3, prev_state_1, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count+1), tree_flag, signal(sec_count+1));
 
             % Correct the filter states based on the magnetic field measurement.
             fusemag(ekf_1, mag_1, Rmag);

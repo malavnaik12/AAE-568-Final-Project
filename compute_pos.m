@@ -7,13 +7,17 @@
 % Author: Malav Naik
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [pos_meas_n, meas_Cov_n] = compute_pos(ekf, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num)
+function [pos_meas_n, meas_Cov_n] = compute_pos(ekf, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal)
 
 % Zhiyao's function: stateComputeAgent1()
 curr_pos_1 = ekf.State(5:7);
 prev_pos_1 = prev_state_1(5:7);
 prev_vel_1 = prev_state_1(8:10);
-agent1State_est_est = stateComputeAgent1(prev_pos_1, prev_vel_1, dt, curr_pos_1, drop_percent, est_est_flag, rand_num);
+if ~tree_flag
+    agent1State_est_est = stateComputeAgent1(prev_pos_1, prev_vel_1, dt, curr_pos_1, drop_percent, est_est_flag, rand_num);
+else
+    agent1State_est_est = trees_analysis(prev_pos_1,prev_vel_1,dt,curr_pos_1,drop_percent,signal);
+end
 
 if ~isnan(agent1State_est_est)
     agent1Pos_est_est = agent1State_est_est(1:3,1);
