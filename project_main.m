@@ -14,9 +14,9 @@ rand_vec = rand(secondsToSimulate*2,1);
 loopBound = floor(numsamples);
 loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
-drop_range = (100:30:100)/100;
+drop_range = (0:30:100)/100;
 
-tree_flag = 1;
+tree_flag = 0;
 num_sec_trees = 0.8*secondsToSimulate;
 num_sec_clear = 0.2*secondsToSimulate;
 d_signal = rand(1,num_sec_trees*2); %disturbing signal simulates signal passing through obstabcles 

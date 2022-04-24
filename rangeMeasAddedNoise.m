@@ -18,9 +18,6 @@ function [rangeMeas,covariance_n] = rangeMeasAddedNoise(ekf, trajPos_n, mean, va
 
 trajPos1_meas = pose(ekf).';
 
-% trajPos1_meas
-% covariance_1 = variance*eye(numel(trajPos_1(1,:)));
-% rng(agentID+5);
 for jj = 1:numel(trajPos_n(1,:))
     rng(jj+seedInitializer);
     noise_n(jj,1) = mean + sqrt(variance(jj))*randn(size(trajPos_n(jj)));
