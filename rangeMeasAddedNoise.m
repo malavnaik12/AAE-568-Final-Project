@@ -9,21 +9,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [rangeMeas,covariance_n] = rangeMeasAddedNoise(trajPos_1, trajPos_n, mean, variance, agentID)
-
+% rng(agentID);
 for ii = 1:numel(trajPos_1(1,:))
     rng(ii);
-    noise_1(ii,1) = mean + sqrt(variance)*randn(size(trajPos_1(ii)));
+    noise_1(ii,1) = mean + sqrt(2.56)*randn(size(trajPos_1(ii))); % Variance here needs to be GPS variance
     trajPos1_meas(ii,1) = trajPos_1(ii) + noise_1(ii);
 end
 % trajPos1_meas
 % covariance_1 = variance*eye(numel(trajPos_1(1,:)));
-
+% rng(agentID+5);
 for jj = 1:numel(trajPos_n(1,:))
     rng(jj+agentID);
-    noise_n(jj,1) = mean + sqrt(variance)*randn(size(trajPos_n(jj)));
+    noise_n(jj,1) = mean + sqrt(variance(jj))*randn(size(trajPos_n(jj)));
     trajPos_n_meas(jj,1) = trajPos_n(jj) + noise_n(jj);
 end
 % trajPos_n_meas
-covariance_n = variance*eye(numel(trajPos_n(1,:)));
+covariance_n = diag(variance); %*eye(numel(trajPos_n(1,:)));
 
 rangeMeas = trajPos_n_meas - trajPos1_meas;
