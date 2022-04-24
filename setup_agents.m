@@ -282,3 +282,4 @@ ekf_3.State = initstate_3;
 %% Initialization of the Noise Characteristics
 noiseMean = 0;
 gps_variance = Rpos;
+noiseVar = [0.01 0.01 0.25];
