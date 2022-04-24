@@ -22,7 +22,6 @@ for i = 1:length(drop_range)
 
 end
 
-
 msep_x = [msep_1(1,:); msep_2(1,:); msep_3(1,:)];
 msep_y = [msep_1(2,:); msep_2(2,:); msep_3(2,:)];
 msep_z = [msep_1(3,:); msep_2(3,:); msep_3(3,:)];
