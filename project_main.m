@@ -7,7 +7,7 @@ setup_agents;
 
 %% Main Simulation Loop Setup
 % Loop setup - |trajData| has about 142 seconds of recorded data.
-secondsToSimulate = 50; % simulate about 50 seconds
+secondsToSimulate = 100; % simulate about 50 seconds
 numsamples = secondsToSimulate*fs_imu;
 rand_vec = rand(secondsToSimulate*2,1);
 
@@ -15,11 +15,11 @@ loopBound = floor(numsamples);
 loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
 %% Analysis Setup
-drop_range = 0:0.3:0;
-est_est_range = 1;
+drop_range = 1;
+est_est_range = 0;
 
-tree_flag = 0;
-tree_range = 0;
+tree_flag = 1;
+tree_range = 0.5;
 
 %% Main Simulation Loop
 
@@ -36,6 +36,7 @@ prev_state_1_3 = ekf_1.State;
 
 for est_est_flag = est_est_range
     for tree_percent = tree_range
+        tree_percent
         drop_count = 1;
 
         num_sec_trees = tree_percent*secondsToSimulate;
@@ -103,11 +104,11 @@ for est_est_flag = est_est_range
                 fusemag(ekf_2, mag_2, Rmag);
                 fusemag(ekf_3, mag_3, Rmag);
 
-                if rand_vec(sec_count) < drop_percent
+                if rand_vec(sec_count) > drop_percent
                     prev_state_1_2 = ekf_1.State;
                 end
 
-                if rand_vec(sec_count+1) < drop_percent
+                if rand_vec(sec_count+1) > drop_percent
                     prev_state_1_3 = ekf_1.State;
                 end
 
