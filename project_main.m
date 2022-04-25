@@ -15,7 +15,7 @@ loopBound = floor(numsamples);
 loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
 %% Analysis Setup
-drop_range = 1;
+drop_range = 0.95;
 est_est_range = 0;
 
 tree_flag = 1;

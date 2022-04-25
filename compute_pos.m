@@ -16,7 +16,7 @@ prev_vel_1 = prev_state_1(8:10);
 if ~tree_flag
     agent1State_est_est = stateComputeAgent1(prev_pos_1, prev_vel_1, dt, curr_pos_1, drop_percent, est_est_flag, rand_num);
 else
-    agent1State_est_est = trees_analysis(prev_pos_1,prev_vel_1,dt,curr_pos_1,drop_percent,signal);
+    agent1State_est_est = trees_analysis(prev_pos_1,prev_vel_1,dt,curr_pos_1,drop_percent,signal,est_est_flag);
 end
 
 if ~isnan(agent1State_est_est)
