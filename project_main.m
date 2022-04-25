@@ -18,10 +18,14 @@ clear
 
 %% Analysis Setup
 drop_range = 0.95;
-est_est_range = 1;
-
+est_est_range = 0;
 tree_flag = 1;
 tree_range = 0.5;
+
+% drop_range = 0:0.05:1;
+% est_est_range = 0:1;
+% tree_flag = 0;
+% tree_range = 0;
 
 % % Main Simulation Loop
 % 
