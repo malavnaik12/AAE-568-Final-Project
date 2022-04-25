@@ -63,38 +63,38 @@ subplot(4,1,1)
 title('Error Comparison Between Fusion Filter and IMU Only Filter')
 hold on
 grid minor
-plot(1:loopBound, posd_1(:,1,1),'b')
-plot(1:loopBound, posd_2(:,1,1),'r')
-plot(1:loopBound, posd_3(:,1,1),'Color',[0,128,0]/255)
-xlabel('k');ylabel('X Position Error [m]')
+plot((1:loopBound)/fs_imu, posd_1(:,1,1),'b')
+plot((1:loopBound)/fs_imu, posd_2(:,1,1),'r')
+plot((1:loopBound)/fs_imu, posd_3(:,1,1),'Color',[0,128,0]/255)
+xlabel('Time [sec]');ylabel('X Position Error [m]')
 legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside')  
 
 subplot(4,1,2)
 hold on
 grid minor
-plot(1:loopBound, posd_1(:,2,1),'b')
-plot(1:loopBound, posd_2(:,2,1),'r')
-plot(1:loopBound, posd_3(:,2,1),'Color',[0,128,0]/255)
-xlabel('k');ylabel('Y Position Error [m]')
+plot((1:loopBound)/fs_imu, posd_1(:,2,1),'b')
+plot((1:loopBound)/fs_imu, posd_2(:,2,1),'r')
+plot((1:loopBound)/fs_imu, posd_3(:,2,1),'Color',[0,128,0]/255)
+xlabel('Time [sec]');ylabel('Y Position Error [m]')
 legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside')  
 
 subplot(4,1,3)
 hold on
 grid minor
-plot(1:loopBound, posd_1(:,3,1),'b')
-plot(1:loopBound, posd_2(:,3,1),'r')
-plot(1:loopBound, posd_3(:,3,1),'Color',[0,128,0]/255)
-xlabel('k');ylabel('Z Position Error [m]')
+plot((1:loopBound)/fs_imu, posd_1(:,3,1),'b')
+plot((1:loopBound)/fs_imu, posd_2(:,3,1),'r')
+plot((1:loopBound)/fs_imu, posd_3(:,3,1),'Color',[0,128,0]/255)
+xlabel('Time [sec]');ylabel('Z Position Error [m]')
 legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside')  
 
 subplot(4,1,4)
 hold on
 grid minor
-plot(1:loopBound, sqrt(posd_1(:,1,1).^2 + posd_1(:,2,1).^2 + posd_1(:,3,1).^2),'b')
-plot(1:loopBound, sqrt(posd_2(:,1,1).^2 + posd_2(:,2,1).^2 + posd_2(:,3,1).^2),'r')
-plot(1:loopBound, sqrt(posd_3(:,1,1).^2 + posd_3(:,2,1).^2 + posd_3(:,3,1).^2),'Color',[0,128,0]/255)
+plot((1:loopBound)/fs_imu, sqrt(posd_1(:,1,1).^2 + posd_1(:,2,1).^2 + posd_1(:,3,1).^2),'b')
+plot((1:loopBound)/fs_imu, sqrt(posd_2(:,1,1).^2 + posd_2(:,2,1).^2 + posd_2(:,3,1).^2),'r')
+plot((1:loopBound)/fs_imu, sqrt(posd_3(:,1,1).^2 + posd_3(:,2,1).^2 + posd_3(:,3,1).^2),'Color',[0,128,0]/255)
 
-xlabel('k');ylabel('Total Position Error [m]')
+xlabel('Time [sec]');ylabel('Total Position Error [m]')
 legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside') 
 
 
