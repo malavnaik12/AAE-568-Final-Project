@@ -60,12 +60,13 @@ msep_z = [msep_1(3,:); msep_2(3,:); msep_3(3,:)];
 figure(1)
 
 subplot(4,1,1)
-title('Error Comparison Between Fusion Filter and IMU Only Filter')
+title('Estimate Error vs Time')
 hold on
 grid minor
 plot((1:loopBound)/fs_imu, posd_1(:,1,1),'b')
 plot((1:loopBound)/fs_imu, posd_2(:,1,1),'r')
 plot((1:loopBound)/fs_imu, posd_3(:,1,1),'Color',[0,128,0]/255)
+plot((1:loopBound)/fs_imu,zeros(1,length(1:loopBound)),'k--')
 xlabel('Time [sec]');ylabel('X Position Error [m]')
 legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside')  
 
@@ -75,6 +76,7 @@ grid minor
 plot((1:loopBound)/fs_imu, posd_1(:,2,1),'b')
 plot((1:loopBound)/fs_imu, posd_2(:,2,1),'r')
 plot((1:loopBound)/fs_imu, posd_3(:,2,1),'Color',[0,128,0]/255)
+plot((1:loopBound)/fs_imu,zeros(1,length(1:loopBound)),'k--')
 xlabel('Time [sec]');ylabel('Y Position Error [m]')
 legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside')  
 
@@ -84,6 +86,7 @@ grid minor
 plot((1:loopBound)/fs_imu, posd_1(:,3,1),'b')
 plot((1:loopBound)/fs_imu, posd_2(:,3,1),'r')
 plot((1:loopBound)/fs_imu, posd_3(:,3,1),'Color',[0,128,0]/255)
+plot((1:loopBound)/fs_imu,zeros(1,length(1:loopBound)),'k--')
 xlabel('Time [sec]');ylabel('Z Position Error [m]')
 legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside')  
 
