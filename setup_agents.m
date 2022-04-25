@@ -19,7 +19,6 @@
 % Credit to MATLAB Example: 
 % https://www.mathworks.com/help/fusion/ug/imu-and-gps-fusion-for-inertial-navigation.html
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-clear,clc,clf,close;
 %% IMU_1 setup
 
 fs_imu = 160; % Hz

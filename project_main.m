@@ -1,40 +1,64 @@
+
+
 clc
 close all
 clear
 
-%% Initialization
-setup_agents;
-
-%% Main Simulation Loop Setup
-% Loop setup - |trajData| has about 142 seconds of recorded data.
-secondsToSimulate = 100; % simulate about 50 seconds
-numsamples = secondsToSimulate*fs_imu;
-rand_vec = rand(secondsToSimulate*2,1);
-
-loopBound = floor(numsamples);
-loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
+% %% Initialization
+% setup_agents;
+% 
+% %% Main Simulation Loop Setup
+% % Loop setup - |trajData| has about 142 seconds of recorded data.
+% secondsToSimulate = 100; % simulate about 50 seconds
+% numsamples = secondsToSimulate*fs_imu;
+% rand_vec = rand(secondsToSimulate*2,1);
+% 
+% loopBound = floor(numsamples);
+% loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
 %% Analysis Setup
 drop_range = 0.95;
-est_est_range = 0;
+est_est_range = 1;
 
 tree_flag = 1;
 tree_range = 0.5;
 
-%% Main Simulation Loop
-
-% Log data for final metric computation.
-pqorient_1 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
-pqpos_1 = zeros(loopBound,3,length(drop_range)*length(tree_range));
-pqorient_2 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
-pqpos_2 = zeros(loopBound,3,length(drop_range)*length(tree_range));
-pqorient_3 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
-pqpos_3 = zeros(loopBound,3,length(drop_range)*length(tree_range));
-
-prev_state_1_2 = ekf_1.State;
-prev_state_1_3 = ekf_1.State;
+% % Main Simulation Loop
+% 
+% prev_state_1_2 = ekf_1.State;
+% prev_state_1_3 = ekf_1.State;
+% 
+% % Log data for final metric computation.
+% pqorient_1 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
+% pqpos_1 = zeros(loopBound,3,length(drop_range)*length(tree_range));
+% pqorient_2 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
+% pqpos_2 = zeros(loopBound,3,length(drop_range)*length(tree_range));
+% pqorient_3 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
+% pqpos_3 = zeros(loopBound,3,length(drop_range)*length(tree_range));    
 
 for est_est_flag = est_est_range
+    % Initialization
+    setup_agents;
+
+    % Main Simulation Loop Setup
+    % Loop setup - |trajData| has about 142 seconds of recorded data.
+    secondsToSimulate = 100; % simulate about 50 seconds
+    numsamples = secondsToSimulate*fs_imu;
+    rand_vec = rand(secondsToSimulate*2,1);
+    
+    loopBound = floor(numsamples);
+    loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
+
+    prev_state_1_2 = ekf_1.State;
+    prev_state_1_3 = ekf_1.State;
+
+    % Log data for final metric computation.
+    pqorient_1 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
+    pqpos_1 = zeros(loopBound,3,length(drop_range)*length(tree_range));
+    pqorient_2 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
+    pqpos_2 = zeros(loopBound,3,length(drop_range)*length(tree_range));
+    pqorient_3 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
+    pqpos_3 = zeros(loopBound,3,length(drop_range)*length(tree_range));    
     for tree_percent = tree_range
         tree_percent
         drop_count = 1;
@@ -116,6 +140,16 @@ for est_est_flag = est_est_range
             end
             drop_count = drop_count+1;  
         end
+    end
+    for j = 1:length(drop_range)
+        posd_1(:,:,j) = pqpos_1(1:loopBound,:,j) - trajPos_1( 1:loopBound, :);
+        posd_2(:,:,j) = pqpos_2(1:loopBound,:,j) - trajPos_2( 1:loopBound, :);
+        posd_3(:,:,j) = pqpos_3(1:loopBound,:,j) - trajPos_3( 1:loopBound, :);
+    
+        error_sum_1(:,j) = sqrt(posd_1(:,1,j).^2 + posd_1(:,2,j).^2 + posd_1(:,3,j).^2);
+        error_sum_2(:,j) = sqrt(posd_2(:,1,j).^2 + posd_2(:,2,j).^2 + posd_2(:,3,j).^2);
+        error_sum_3(:,j) = sqrt(posd_3(:,1,j).^2 + posd_3(:,2,j).^2 + posd_3(:,3,j).^2);
+        errorTotal(j,:,est_est_flag+1) = [rms(error_sum_1(:,j)) rms(error_sum_2(:,j)) rms(error_sum_3(:,j))];
     end
 end
 
