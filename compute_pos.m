@@ -9,7 +9,6 @@
 
 function [pos_meas_n, meas_Cov_n] = compute_pos(ekf, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal)
 
-% Zhiyao's function: stateComputeAgent1()
 curr_pos_1 = ekf.State(5:7);
 prev_pos_1 = prev_state_1(5:7);
 prev_vel_1 = prev_state_1(8:10);

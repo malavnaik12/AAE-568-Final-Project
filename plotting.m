@@ -61,8 +61,8 @@ elseif (numel(size(errorTotal)) == 3)
     plot(drop_range*100, errorTotal(:,2,2),'r-','LineWidth',1.2)
     plot(drop_range*100, errorTotal(:,3,2),'LineStyle','-','LineWidth',1.2,'Color',[0,128,0]/255)
     xlabel('Dropout Percentage [%]');
-    ylabel('Total Root Mean Square Error [m]')
-    yyaxis right
+%     ylabel('Total Root Mean Square Error [m]')
+%     yyaxis right
     set(gca,'YScale','log')
     plot(drop_range*100, errorTotal(:,2,1),'r--','LineWidth',1.2)
     plot(drop_range*100, errorTotal(:,3,1),'LineStyle','--','LineWidth',1.2,'Color',[0,128,0]/255)

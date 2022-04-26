@@ -22,7 +22,7 @@ est_est_range = 0;
 tree_flag = 1;
 tree_range = 0.5;
 
-% drop_range = 0:0.05:1;
+% drop_range = [0:0.02:0.38 0.4:0.03:1]; %0:0.05:1;
 % est_est_range = 0:1;
 % tree_flag = 0;
 % tree_range = 0;
@@ -64,7 +64,7 @@ for est_est_flag = est_est_range
     pqorient_3 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
     pqpos_3 = zeros(loopBound,3,length(drop_range)*length(tree_range));    
     for tree_percent = tree_range
-        tree_percent
+        tree_percent;
         drop_count = 1;
 
         num_sec_trees = tree_percent*secondsToSimulate;
