@@ -19,8 +19,8 @@ clear
 %% Analysis Setup
 drop_range = 0.20;
 est_est_range = 1;
-tree_flag = 0;
-tree_range = 0.5;
+tree_flag = 1;
+tree_range = 0.5;%[0:0.005:0.195 0.2:0.05:0.5];
 
 % drop_range = [0:0.02:0.38 0.4:0.03:1]; %0:0.05:1;
 % est_est_range = 0:1;
@@ -132,18 +132,32 @@ for est_est_flag = est_est_range
                 fusemag(ekf_2, mag_2, Rmag);
                 fusemag(ekf_3, mag_3, Rmag);
 
-                if rand_vec(sec_count) > drop_percent
-                    prev_state_1_2 = ekf_1.State(5:10);
-                elseif est_est_flag == 1
-                    prev_state_1_2 = prev_state_est_1_2;
-                end
+                
+                if ~tree_flag
+                    if rand_vec(sec_count) > drop_percent
+                        prev_state_1_2 = ekf_1.State(5:10);
+                    elseif est_est_flag == 1
+                        prev_state_1_2 = prev_state_est_1_2;
+                    end
 
-                if rand_vec(sec_count+1) > drop_percent
-                    prev_state_1_3 = ekf_1.State(5:10);
-                elseif est_est_flag == 1
-                    prev_state_1_3 = prev_state_est_1_3;
-                end
+                    if rand_vec(sec_count+1) > drop_percent
+                        prev_state_1_3 = ekf_1.State(5:10);
+                    elseif est_est_flag == 1
+                        prev_state_1_3 = prev_state_est_1_3;
+                    end
+                else
+                    if signal(sec_count) > drop_percent
+                        prev_state_1_2 = ekf_1.State(5:10);
+                    elseif est_est_flag == 1
+                        prev_state_1_2 = prev_state_est_1_2;
+                    end
 
+                    if signal(sec_count+1) > drop_percent
+                        prev_state_1_3 = ekf_1.State(5:10);
+                    elseif est_est_flag == 1
+                        prev_state_1_3 = prev_state_est_1_3;
+                    end
+                end
                 sec_count = sec_count+2;
             end
             drop_count = drop_count+1;  
