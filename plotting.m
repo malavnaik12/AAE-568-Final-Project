@@ -50,14 +50,14 @@ figure(2)
 hold on; grid minor
 title({'Root Mean Square Error (RMSE) vs. Dropout Percentage',''})
 if (numel(size(errorTotal)) == 2)
-    plot(drop_range*100, errorTotal(:,1,1),'b-','LineWidth',1.2)
+    plot(drop_range*100, RMSE_PA,'b-','LineWidth',1.2)
     plot(drop_range*100, errorTotal(:,2,2),'r-','LineWidth',1.2)
     plot(drop_range*100, errorTotal(:,3,2),'LineStyle','-','LineWidth',1.2,'Color',[0,128,0]/255)
     xlabel('Dropout Percentage [%]');
     ylabel('Total Root Mean Square Error [m]')
     legend('Primary Agent', 'Secondary Agent 1', 'Secondary Agent 2','Location','northeastoutside')
 elseif (numel(size(errorTotal)) == 3)
-    plot(drop_range*100, errorTotal(:,1,1),'b-','LineWidth',1.2)
+    plot(drop_range*100, RMSE_PA,'b-','LineWidth',1.2)
     plot(drop_range*100, errorTotal(:,2,2),'r-','LineWidth',1.2)
     plot(drop_range*100, errorTotal(:,3,2),'LineStyle','-','LineWidth',1.2,'Color',[0,128,0]/255)
     xlabel('Dropout Percentage [%]');

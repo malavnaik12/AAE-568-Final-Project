@@ -174,6 +174,9 @@ for est_est_flag = est_est_range
         errorTotal(j,:,est_est_flag+1) = [rms(error_sum_1(:,j)) rms(error_sum_2(:,j)) rms(error_sum_3(:,j))];
     end
 end
+%%
+RMSE_PA = ones(length(drop_range),1).*errorTotal(1,1,2);
+%%
 
 plotting
 
