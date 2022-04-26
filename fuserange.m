@@ -8,12 +8,12 @@
 % Author: Nathan Gurgens
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function fuserange(ekf_1, ekf_n, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal)
+function prev_state_est = fuserange(ekf_1, ekf_n, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal)
 
 % Compute the position of Agent n given the relative position measurement
 % between Agent 1 and Agent n and the estimated position of Agent 1
 
-[pos_meas_n, meas_Cov_n] = compute_pos(ekf_1, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal);
+[pos_meas_n, meas_Cov_n, prev_state_est] = compute_pos(ekf_1, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal);
 
 if ~isnan(pos_meas_n)
     range_correction(ekf_n, pos_meas_n, @rangeMeasFcn, meas_Cov_n, @rangeMeasJacobianFcn)

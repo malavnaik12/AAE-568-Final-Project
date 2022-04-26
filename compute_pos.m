@@ -7,19 +7,19 @@
 % Author: Malav Naik
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [pos_meas_n, meas_Cov_n] = compute_pos(ekf, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal)
+function [pos_meas_n, meas_Cov_n, prev_state_est] = compute_pos(ekf, rel_vec, rel_Cov, prev_state_1, dt, drop_percent, est_est_flag, rand_num, tree_flag, signal)
 
 curr_pos_1 = ekf.State(5:7);
-prev_pos_1 = prev_state_1(5:7);
-prev_vel_1 = prev_state_1(8:10);
+prev_pos_1 = prev_state_1(1:3);
+prev_vel_1 = prev_state_1(4:6);
 if ~tree_flag
-    agent1State_est_est = stateComputeAgent1(prev_pos_1, prev_vel_1, dt, curr_pos_1, drop_percent, est_est_flag, rand_num);
+    [agent1State_est_est, prev_state_est] = stateComputeAgent1(prev_pos_1, prev_vel_1, dt, curr_pos_1, drop_percent, est_est_flag, rand_num);
 else
-    agent1State_est_est = trees_analysis(prev_pos_1,prev_vel_1,dt,curr_pos_1,drop_percent,signal,est_est_flag);
+    [agent1State_est_est, prev_state_est] = trees_analysis(prev_pos_1,prev_vel_1,dt,curr_pos_1,drop_percent,signal,est_est_flag);
 end
 
 if ~isnan(agent1State_est_est)
-    agent1Pos_est_est = agent1State_est_est(1:3,1);
+    agent1Pos_est_est(1:3,1) = agent1State_est_est(1:3);
 
     pos_meas_n = agent1Pos_est_est + rel_vec;
 

@@ -17,9 +17,9 @@ clear
 % loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
 %% Analysis Setup
-drop_range = 0.95;
-est_est_range = 0;
-tree_flag = 1;
+drop_range = 0.20;
+est_est_range = 1;
+tree_flag = 0;
 tree_range = 0.5;
 
 % drop_range = [0:0.02:0.38 0.4:0.03:1]; %0:0.05:1;
@@ -27,7 +27,7 @@ tree_range = 0.5;
 % tree_flag = 0;
 % tree_range = 0;
 
-% % Main Simulation Loop
+%% Main Simulation Loop
 % 
 % prev_state_1_2 = ekf_1.State;
 % prev_state_1_3 = ekf_1.State;
@@ -46,15 +46,15 @@ for est_est_flag = est_est_range
 
     % Main Simulation Loop Setup
     % Loop setup - |trajData| has about 142 seconds of recorded data.
-    secondsToSimulate = 100; % simulate about 50 seconds
+    secondsToSimulate = 50; % simulate about 50 seconds
     numsamples = secondsToSimulate*fs_imu;
     rand_vec = rand(secondsToSimulate*2,1);
     
     loopBound = floor(numsamples);
     loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
-    prev_state_1_2 = ekf_1.State;
-    prev_state_1_3 = ekf_1.State;
+    prev_state_1_2 = ekf_1.State(5:10);
+    prev_state_1_3 = ekf_1.State(5:10);
 
     % Log data for final metric computation.
     pqorient_1 = quaternion.zeros(loopBound,1,length(drop_range)*length(tree_range));
@@ -124,8 +124,8 @@ for est_est_flag = est_est_range
                 fusegps(ekf_1, lla_1, Rpos, gpsvel_1, Rvel);
 
                 % Correct the filter states based on the relative position measurement.
-                fuserange(ekf_1, ekf_2, rel_pos_NED_1_to_2, rel_Cov_2, prev_state_1_2, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count), tree_flag, signal(sec_count))
-                fuserange(ekf_1, ekf_3, rel_pos_NED_1_to_3, rel_Cov_3, prev_state_1_3, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count+1), tree_flag, signal(sec_count+1));
+                prev_state_est_1_2 = fuserange(ekf_1, ekf_2, rel_pos_NED_1_to_2, rel_Cov_2, prev_state_1_2, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count), tree_flag, signal(sec_count));
+                prev_state_est_1_3 = fuserange(ekf_1, ekf_3, rel_pos_NED_1_to_3, rel_Cov_3, prev_state_1_3, 1/fs_gps, drop_percent, est_est_flag, rand_vec(sec_count+1), tree_flag, signal(sec_count+1));
 
                 % Correct the filter states based on the magnetic field measurement.
                 fusemag(ekf_1, mag_1, Rmag);
@@ -133,11 +133,15 @@ for est_est_flag = est_est_range
                 fusemag(ekf_3, mag_3, Rmag);
 
                 if rand_vec(sec_count) > drop_percent
-                    prev_state_1_2 = ekf_1.State;
+                    prev_state_1_2 = ekf_1.State(5:10);
+                elseif est_est_flag == 1
+                    prev_state_1_2 = prev_state_est_1_2;
                 end
 
                 if rand_vec(sec_count+1) > drop_percent
-                    prev_state_1_3 = ekf_1.State;
+                    prev_state_1_3 = ekf_1.State(5:10);
+                elseif est_est_flag == 1
+                    prev_state_1_3 = prev_state_est_1_3;
                 end
 
                 sec_count = sec_count+2;
