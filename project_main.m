@@ -17,7 +17,7 @@ clear
 % loopBound = floor(loopBound/fs_imu)*fs_imu; % ensure enough IMU Samples
 
 %% Analysis Setup
-drop_range = 0.20;
+drop_range = 0.80;
 est_est_range = 1;
 tree_flag = 1;
 tree_range = 0.5;%[0:0.005:0.195 0.2:0.05:0.5];
@@ -175,7 +175,8 @@ for est_est_flag = est_est_range
     end
 end
 %%
-RMSE_PA = ones(length(drop_range),1).*errorTotal(1,1,2);
+RMSE_PA = ones(length(drop_range),1).*errorTotal(1,1,1);
+
 %%
 
 plotting
